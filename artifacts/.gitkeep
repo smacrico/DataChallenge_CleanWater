@@ -1,0 +1,39 @@
+# Artifacts Directory
+
+This directory stores generated outputs from the pipeline.
+
+## Contents
+
+After running the full pipeline (`make all`):
+
+```
+artifacts/
+├── submission.csv                    # Competition submission
+├── MODEL_CARD.md                     # Model documentation (Markdown)
+├── MODEL_CARD.html                   # Model documentation (HTML)
+├── MODEL_CARD.pdf                    # Model documentation (PDF)
+├── BUSINESS_PLAN_SNAPSHOT.md         # Business overview (Markdown)
+├── BUSINESS_PLAN_SNAPSHOT.html       # Business overview (HTML)
+├── BUSINESS_PLAN_SNAPSHOT.pdf        # Business overview (PDF)
+├── VIDEO_SCRIPT.md                   # Presentation script (Markdown)
+├── VIDEO_SCRIPT.html                 # Presentation script (HTML)
+└── VIDEO_SCRIPT.pdf                  # Presentation script (PDF)
+```
+
+## Submission File
+
+`submission.csv` contains 200 rows and 3 columns:
+
+| ALKALINITY | EC | DRP |
+|------------|----|----|
+| 45.23      | 235.67 | 0.12 |
+| ...        | ...    | ...  |
+
+## Documentation
+
+Documentation files are auto-generated with live metrics from the latest training run.
+
+## Git Ignore
+
+Most artifacts (CSV, HTML, PDF) are excluded from version control.
+Markdown files may be committed for documentation purposes.

@@ -1,0 +1,38 @@
+# Core ML/Data
+numpy==1.26.4
+pandas==2.2.1
+scikit-learn==1.4.1.post1
+xgboost==2.0.3
+
+# Snowflake
+snowflake-snowpark-python[pandas]==1.14.0
+snowflake-connector-python==3.7.1
+
+# Configuration & Environment
+pyyaml==6.0.1
+python-dotenv==1.0.1
+
+# Documentation Generation
+markdown==3.5.2
+reportlab==4.1.0
+
+# Jupyter
+jupyter==1.0.0
+nbformat==5.9.2
+nbclient==0.9.0
+papermill==2.5.0
+ipykernel==6.29.3
+
+# Code Quality
+black==24.2.0
+isort==5.13.2
+ruff==0.3.0
+pre-commit==3.6.2
+
+# Testing
+pytest==8.0.2
+pytest-cov==4.1.0
+
+# Utilities
+tqdm==4.66.2
+joblib==1.3.2

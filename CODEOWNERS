@@ -1,0 +1,19 @@
+# Default owners for all files
+* @ey-org/water-quality-team
+
+# ML Pipeline and Feature Engineering
+/src/wqsa/features/ @ey-org/ml-engineers
+/src/wqsa/modeling/ @ey-org/ml-engineers
+
+# Snowflake & Data Infrastructure
+/src/wqsa/io/ @ey-org/data-engineers
+
+# Documentation & Reporting
+/src/wqsa/docs/ @ey-org/tech-writers
+
+# CI/CD and DevOps
+/.github/ @ey-org/devops
+/Makefile @ey-org/devops
+
+# Configuration
+/config/ @ey-org/ml-engineers @ey-org/data-engineers
