@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Lint with ruff
+      run: |
+        ruff check src/ tests/
+    
+    - name: Check formatting with black
+      run: |
+        black --check src/ tests/
+    
+    - name: Check imports with isort
+      run: |
+        isort --check-only src/ tests/
+    
+    - name: Run tests with pytest
+      run: |
+        pytest -v --cov=src/wqsa --cov-report=xml --cov-report=term
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+    
+    - name: Smoke test notebooks (optional, requires Snowflake)
+      run: |
+        echo "Notebook smoke tests skipped (requires Snowflake credentials)"
+        # Uncomment when Snowflake is configured in CI:
+        # pytest tests/ -v -k smoke || true
+      continue-on-error: true

@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: |
+        pytest -v
+    
+    - name: Generate documentation
+      run: |
+        mkdir -p artifacts
+        python -m src.wqsa.docs.generate_model_card || echo "Model card generation skipped"
+        python -m src.wqsa.docs.generate_business_plan || echo "Business plan generation skipped"
+        python -m src.wqsa.docs.generate_video_script || echo "Video script generation skipped"
+        python -m src.wqsa.docs.export_to_html || echo "HTML export skipped"
+        python -m src.wqsa.docs.export_to_pdf || echo "PDF export skipped"
+      continue-on-error: true
+    
+    - name: Create release archive
+      run: |
+        tar -czf water-quality-sa-predictor-${GITHUB_REF_NAME}.tar.gz \
+          --exclude='.git' \
+          --exclude='venv' \
+          --exclude='__pycache__' \
+          --exclude='.pytest_cache' \
+          .
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          water-quality-sa-predictor-*.tar.gz
+          artifacts/submission.csv
+          artifacts/MODEL_CARD.md
+          artifacts/MODEL_CARD.html
+          artifacts/MODEL_CARD.pdf
+          artifacts/BUSINESS_PLAN_SNAPSHOT.md
+          artifacts/BUSINESS_PLAN_SNAPSHOT.html
+          artifacts/BUSINESS_PLAN_SNAPSHOT.pdf
+          artifacts/VIDEO_SCRIPT.md
+          artifacts/VIDEO_SCRIPT.html
+          artifacts/VIDEO_SCRIPT.pdf
+        body: |
+          ## Release ${{ github.ref_name }}
+          
+          Water Quality South Africa Predictor - Production Release
+          
+          ### Artifacts
+          - `submission.csv` - Competition submission file
+          - `MODEL_CARD.*` - Model documentation (MD/HTML/PDF)
+          - `BUSINESS_PLAN_SNAPSHOT.*` - Business overview (MD/HTML/PDF)
+          - `VIDEO_SCRIPT.*` - Presentation script (MD/HTML/PDF)
+          
+          ### Installation
+          ```bash
+          tar -xzf water-quality-sa-predictor-${{ github.ref_name }}.tar.gz
+          cd water-quality-sa-predictor
+          python -m venv venv
+          source venv/bin/activate
+          make install
+          ```
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

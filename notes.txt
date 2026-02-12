@@ -1,0 +1,27 @@
+What Was Added:
+📖 Step-by-Step Pipeline Workflow
+Data Ingestion & Stage Validation - How the system connects to Snowflake and validates data
+Landsat Join with Anti-Leakage - Detailed explanation of satellite imagery feature engineering
+TerraClimate Join - Climate data integration with temporal features
+Gold Table Creation - Assembly of canonical feature sets
+Model Training with GroupKFold CV - Spatial cross-validation strategy
+Prediction & Submission Generation - Ensemble prediction process
+Documentation Generation - Auto-generated model cards and reports
+
+🔄 Pipeline Execution Guide
+Full Automated Pipeline (make all) - Single command execution
+Manual Step-by-Step - Detailed instructions for each stage with expected outputs
+Bash Script Usage - Alternative execution method
+Troubleshooting Section - Common issues and solutions for:
+Snowflake connection problems
+Missing stage files
+Feature engineering failures
+Memory issues
+Submission format errors
+
+⚡ Performance & Best Practices
+Snowflake warehouse sizing tips
+Parallel model training strategies
+Feature caching techniques
+Monitoring and logging guidance
+Version control best practices
