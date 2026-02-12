@@ -43,13 +43,10 @@ This repository implements a complete solution for the **EY AI & Data Challenge 
 
 - Python 3.11+
 - Snowflake account with appropriate permissions
-- Git
-- **Linux/Mac**: Make (usually pre-installed)
-- **Windows**: PowerShell (included with Windows)
+- Git & Make
 
 ### Installation
 
-#### Linux/Mac (using Make)
 ```bash
 # Clone repository
 git clone https://github.com/yourusername/water-quality-sa-predictor.git
@@ -60,20 +57,6 @@ make install
 
 # Copy and configure environment
 cp .env.example .env
-# Edit .env with your Snowflake credentials
-```
-
-#### Windows (using PowerShell)
-```powershell
-# Clone repository
-git clone https://github.com/yourusername/water-quality-sa-predictor.git
-cd water-quality-sa-predictor
-
-# Install dependencies
-.\run.ps1 install
-
-# Copy and configure environment
-Copy-Item .env.example .env
 # Edit .env with your Snowflake credentials
 ```
 
@@ -107,21 +90,14 @@ SF_STAGE=@AI_CHALLENGE_STAGE
 
 #### Option 1: Full Automated Pipeline
 
-**Linux/Mac:**
 ```bash
 make all
-```
-
-**Windows PowerShell:**
-```powershell
-.\run.ps1 all
 ```
 
 This runs: linting → tests → feature engineering → training → prediction → docs generation → exports
 
 #### Option 2: Step-by-Step
 
-**Linux/Mac:**
 ```bash
 # Lint and format code
 make lint
@@ -140,27 +116,6 @@ make docs
 
 # Export documentation to HTML/PDF
 make export
-```
-
-**Windows PowerShell:**
-```powershell
-# Lint and format code
-.\run.ps1 lint
-
-# Run tests
-.\run.ps1 test
-
-# Train models with cross-validation
-.\run.ps1 train
-
-# Generate predictions and submission.csv
-.\run.ps1 predict
-
-# Generate documentation (Model Card, Business Plan, Video Script)
-.\run.ps1 docs
-
-# Export documentation to HTML/PDF
-.\run.ps1 export
 ```
 
 #### Option 3: Jupyter Notebooks
@@ -227,7 +182,6 @@ Tables built in Snowflake:
 
 ### Code Quality
 
-**Linux/Mac:**
 ```bash
 # Format code
 make format
@@ -240,21 +194,6 @@ make test
 
 # Quick smoke test
 make smoke
-```
-
-**Windows PowerShell:**
-```powershell
-# Format code
-.\run.ps1 format
-
-# Run linters
-.\run.ps1 lint
-
-# Run all tests
-.\run.ps1 test
-
-# Quick smoke test
-.\run.ps1 smoke
 ```
 
 ### Pre-commit Hooks
@@ -765,14 +704,9 @@ python -m src.wqsa.docs.export_to_pdf   # → artifacts/*.pdf
 
 ### Full Automated Pipeline
 
-**Single Command (Linux/Mac):**
+**Single Command**:
 ```bash
 make all
-```
-
-**Single Command (Windows PowerShell):**
-```powershell
-.\run.ps1 all
 ```
 
 **What It Does**:
@@ -790,45 +724,22 @@ make all
 ### Manual Step-by-Step Execution
 
 #### Prerequisites Check
-
-**Linux/Mac:**
 ```bash
 # Verify Python version
 python --version  # Should be 3.11+
 
 # Activate virtual environment
-source venv/bin/activate
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
 
 # Verify Snowflake credentials
 cat .env  # Check SF_ACCOUNT, SF_USER, etc.
 ```
 
-**Windows PowerShell:**
-```powershell
-# Verify Python version
-python --version  # Should be 3.11+
-
-# Activate virtual environment
-venv\Scripts\Activate.ps1
-
-# Verify Snowflake credentials
-Get-Content .env  # Check SF_ACCOUNT, SF_USER, etc.
-```
-
 #### Step 1: Install Dependencies
-
-**Linux/Mac:**
 ```bash
 make install
-# OR manually:
-pip install -r requirements.txt
-pre-commit install
-```
-
-**Windows PowerShell:**
-```powershell
-.\run.ps1 install
-# OR manually:
+# OR
 pip install -r requirements.txt
 pre-commit install
 ```
@@ -874,17 +785,8 @@ INFO: Building VALID_GOLD... 200 rows, 22 columns
 ```
 
 #### Step 4: Train Models
-
-**Linux/Mac:**
 ```bash
 make train
-# OR
-python -m src.wqsa.modeling.train_cv
-```
-
-**Windows PowerShell:**
-```powershell
-.\run.ps1 train
 # OR
 python -m src.wqsa.modeling.train_cv
 ```
@@ -916,17 +818,8 @@ Mean CV R² across targets: 0.8412
 ```
 
 #### Step 5: Generate Predictions
-
-**Linux/Mac:**
 ```bash
 make predict
-# OR
-python -m src.wqsa.modeling.predict
-```
-
-**Windows PowerShell:**
-```powershell
-.\run.ps1 predict
 # OR
 python -m src.wqsa.modeling.predict
 ```
@@ -948,19 +841,8 @@ Generating predictions...
 ```
 
 #### Step 6: Generate Documentation
-
-**Linux/Mac:**
 ```bash
 make docs
-# OR
-python -m src.wqsa.docs.generate_model_card
-python -m src.wqsa.docs.generate_business_plan
-python -m src.wqsa.docs.generate_video_script
-```
-
-**Windows PowerShell:**
-```powershell
-.\run.ps1 docs
 # OR
 python -m src.wqsa.docs.generate_model_card
 python -m src.wqsa.docs.generate_business_plan
@@ -978,18 +860,8 @@ Generating Video Script...
 ```
 
 #### Step 7: Export to HTML/PDF
-
-**Linux/Mac:**
 ```bash
 make export
-# OR
-python -m src.wqsa.docs.export_to_html
-python -m src.wqsa.docs.export_to_pdf
-```
-
-**Windows PowerShell:**
-```powershell
-.\run.ps1 export
 # OR
 python -m src.wqsa.docs.export_to_html
 python -m src.wqsa.docs.export_to_pdf
@@ -1139,15 +1011,8 @@ print(f"Peak memory: {metadata['peak_memory_mb']} MB")
 ### Best Practices
 
 1. **Always Run Tests Before Training**
-   
-   **Linux/Mac:**
    ```bash
    make test  # Ensures code quality
-   ```
-   
-   **Windows PowerShell:**
-   ```powershell
-   .\run.ps1 test  # Ensures code quality
    ```
 
 2. **Version Control Your Config**
@@ -1166,20 +1031,10 @@ print(f"Peak memory: {metadata['peak_memory_mb']} MB")
    ```
 
 4. **Archive Successful Runs**
-   
-   **Linux/Mac:**
    ```bash
    mkdir -p runs/run_$(date +%Y%m%d_%H%M%S)
    cp artifacts/submission.csv runs/run_*/
    cp models/*.pkl runs/run_*/
-   ```
-   
-   **Windows PowerShell:**
-   ```powershell
-   $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-   New-Item -ItemType Directory -Path "runs\run_$timestamp" -Force
-   Copy-Item artifacts\submission.csv "runs\run_$timestamp\"
-   Copy-Item models\*.pkl "runs\run_$timestamp\"
    ```
 
 5. **Document Hyperparameter Changes**
